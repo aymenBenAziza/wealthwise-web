@@ -2,9 +2,24 @@ import { useEffect, useState } from 'react';
 import AppShell from '../components/AppShell';
 import { useAuth } from '../contexts/AuthContext';
 
+function ProfileBadge({ name, avatarUrl }) {
+  if (avatarUrl) {
+    return <img src={avatarUrl} alt="Profile" className="profile-avatar-image" />;
+  }
+
+  return <div className="profile-badge">{name?.[0]?.toUpperCase() || 'U'}</div>;
+}
+
 export default function ProfilePage() {
   const { user, updateProfile, refreshProfile } = useAuth();
-  const [form, setForm] = useState({ name: '', monthlyIncome: 0, preferredCurrency: 'TND', language: 'FR' });
+  const [form, setForm] = useState({
+    name: '',
+    monthlyIncome: 0,
+    preferredCurrency: 'TND',
+    language: 'FR',
+    avatarUrl: '',
+    bio: '',
+  });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -20,6 +35,8 @@ export default function ProfilePage() {
         monthlyIncome: user.profile?.monthlyIncome ?? 0,
         preferredCurrency: user.profile?.preferredCurrency ?? 'TND',
         language: user.profile?.language ?? 'FR',
+        avatarUrl: user.profile?.avatarUrl ?? '',
+        bio: user.profile?.bio ?? '',
       });
     }
   }, [user]);
@@ -36,6 +53,8 @@ export default function ProfilePage() {
         monthlyIncome: Number(form.monthlyIncome),
         preferredCurrency: form.preferredCurrency,
         language: form.language,
+        avatarUrl: form.avatarUrl,
+        bio: form.bio,
       });
       setMessage('Profile updated successfully');
     } catch (err) {
@@ -49,14 +68,14 @@ export default function ProfilePage() {
     <article className="metric-card card soft-card accent-card">
       <span className="metric-label">Profile state</span>
       <strong className="metric-value">Synced</strong>
-      <p>User information and preferences are stored in the shared MySQL database.</p>
+      <p>User information, avatar, bio, and preferences are stored in the shared MySQL database.</p>
     </article>
   );
 
   return (
     <AppShell
       title="Profile"
-      subtitle="Manage the shared account information and financial preferences used by the web client."
+      subtitle="Manage your account details, public bio, avatar, and financial preferences used by the web client."
       aside={aside}
     >
       {(message || error) && (
@@ -67,7 +86,7 @@ export default function ProfilePage() {
 
       <section className="profile-layout">
         <article className="card soft-card profile-summary">
-          <div className="profile-badge">{user?.name?.[0]?.toUpperCase() || 'U'}</div>
+          <ProfileBadge name={user?.name} avatarUrl={user?.profile?.avatarUrl} />
           <div>
             <h2>{user?.name}</h2>
             <p className="muted">{user?.email}</p>
@@ -76,6 +95,7 @@ export default function ProfilePage() {
             <div><span>Role</span><strong>{user?.role}</strong></div>
             <div><span>Language</span><strong>{user?.profile?.language || 'FR'}</strong></div>
             <div><span>Currency</span><strong>{user?.profile?.preferredCurrency || 'TND'}</strong></div>
+            <div><span>Bio</span><strong>{user?.profile?.bio || 'No bio yet'}</strong></div>
           </div>
         </article>
 
@@ -96,6 +116,16 @@ export default function ProfilePage() {
             <label>
               <span>Monthly income</span>
               <input type="number" min="0" step="0.01" value={form.monthlyIncome} onChange={(e) => setForm({ ...form, monthlyIncome: e.target.value })} required />
+            </label>
+
+            <label className="span-2">
+              <span>Avatar image URL</span>
+              <input value={form.avatarUrl} onChange={(e) => setForm({ ...form, avatarUrl: e.target.value })} placeholder="https://example.com/avatar.jpg" />
+            </label>
+
+            <label className="span-2">
+              <span>Bio</span>
+              <textarea className="app-textarea" rows="4" value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} placeholder="Tell people a bit about you" />
             </label>
 
             <label>

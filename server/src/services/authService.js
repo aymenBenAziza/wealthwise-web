@@ -19,6 +19,8 @@ const updateProfileSchema = z.object({
   monthlyIncome: z.coerce.number().min(0),
   preferredCurrency: z.string().min(3).max(10),
   language: z.enum(['FR', 'EN', 'AR']),
+  bio: z.string().max(2000).optional().default(''),
+  avatarUrl: z.string().max(500).optional().default(''),
 });
 
 function hashPassword(password) {
@@ -143,9 +145,9 @@ async function updateProfile(userId, input) {
   await pool.execute('UPDATE user SET name = ? WHERE id = ?', [data.name, userId]);
   await pool.execute(
     `UPDATE user_profile
-     SET monthly_income = ?, preferred_currency = ?, language = ?
+     SET monthly_income = ?, preferred_currency = ?, language = ?, bio = ?, avatar_url = ?
      WHERE user_id = ?`,
-    [data.monthlyIncome, data.preferredCurrency, data.language, userId]
+    [data.monthlyIncome, data.preferredCurrency, data.language, data.bio, data.avatarUrl, userId]
   );
 
   const user = await findUserById(userId);

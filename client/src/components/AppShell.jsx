@@ -7,7 +7,7 @@ const links = [
   { to: '/transactions', label: 'Transactions' },
   { to: '/budgets', label: 'Budgets' },
   { to: '/savings-goals', label: 'Savings' },
-  { to: '/profile', label: 'Profile' },
+  { to: '/analytics', label: 'Analytics' },
 ];
 
 function WealthWiseLogo() {
@@ -24,6 +24,17 @@ function WealthWiseLogo() {
       <circle cx="46" cy="22" r="3.5" fill="#d9b16a" />
     </svg>
   );
+}
+
+function ProfileAvatar({ user }) {
+  const avatarUrl = user?.profile?.avatarUrl;
+  const initials = user?.name?.[0]?.toUpperCase() || 'U';
+
+  if (avatarUrl) {
+    return <img src={avatarUrl} alt="Profile" className="header-avatar-image" />;
+  }
+
+  return <span className="header-avatar-fallback">{initials}</span>;
 }
 
 export default function AppShell({ title, subtitle, aside, children }) {
@@ -79,16 +90,17 @@ export default function AppShell({ title, subtitle, aside, children }) {
                   {link.label}
                 </NavLink>
               ))}
+              <NavLink to="/profile" onClick={handleNavigate} className={({ isActive }) => isActive ? 'top-nav-link active mobile-profile-link' : 'top-nav-link mobile-profile-link'}>
+                Profile
+              </NavLink>
             </div>
           </nav>
 
-          <div className="header-user desktop-only">
-            <div className="user-badge">{user?.name?.[0]?.toUpperCase() || 'U'}</div>
-            <div className="user-copy">
-              <strong>{user?.name}</strong>
-              <span className="user-email" title={user?.email}>{user?.email}</span>
-            </div>
-            <button type="button" className="ghost-button" onClick={handleLogout}>Logout</button>
+          <div className="header-user">
+            <Link to="/profile" className="header-avatar-link" aria-label="Open profile" onClick={handleNavigate}>
+              <ProfileAvatar user={user} />
+            </Link>
+            <button type="button" className="ghost-button desktop-only" onClick={handleLogout}>Logout</button>
           </div>
         </div>
       </header>
