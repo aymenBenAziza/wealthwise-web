@@ -15,7 +15,7 @@ export default function DashboardPage() {
       <article className="metric-card card soft-card">
         <span className="metric-label">Next module</span>
         <strong className="metric-value">Budgets</strong>
-        <p>Module 3 can now build on top of real transactions and categories.</p>
+        <p>Monthly spending limits are now available in the web app.</p>
       </article>
     </>
   );
@@ -43,14 +43,14 @@ export default function DashboardPage() {
         <article className="card soft-card panel-grid">
           <div>
             <p className="section-kicker">Migration progress</p>
-            <h2>Modules 1 and 2</h2>
-            <p className="muted">Authentication, profile, transactions, categories, and filtering are wired.</p>
+            <h2>Modules 1 to 3</h2>
+            <p className="muted">Authentication, profile, transactions, categories, and budgets are wired.</p>
           </div>
           <ul className="check-list">
             <li>JWT auth is active</li>
             <li>Shared MD5 login compatibility is active</li>
             <li>Transactions CRUD is active</li>
-            <li>Custom categories are active</li>
+            <li>Budget usage calculations are active</li>
           </ul>
         </article>
       </section>
@@ -62,7 +62,7 @@ export default function DashboardPage() {
         </div>
         <div className="inline-actions wrap-end">
           <Link to="/transactions" className="button-link primary-link">Open transactions</Link>
-          <Link to="/profile" className="button-link secondary-link">Open profile</Link>
+          <Link to="/budgets" className="button-link secondary-link">Open budgets</Link>
         </div>
       </section>
     </AppShell>

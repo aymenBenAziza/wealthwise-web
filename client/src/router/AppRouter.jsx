@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import ProtectedRoute from '../components/ProtectedRoute';
+import BudgetsPage from '../pages/BudgetsPage';
 import DashboardPage from '../pages/DashboardPage';
 import LoginPage from '../pages/LoginPage';
 import ProfilePage from '../pages/ProfilePage';
@@ -20,17 +21,12 @@ function PublicOnly({ children }) {
 export default function AppRouter() {
   return (
     <Routes>
-      <Route
-        path="/login"
-        element={<PublicOnly><LoginPage /></PublicOnly>}
-      />
-      <Route
-        path="/register"
-        element={<PublicOnly><RegisterPage /></PublicOnly>}
-      />
+      <Route path="/login" element={<PublicOnly><LoginPage /></PublicOnly>} />
+      <Route path="/register" element={<PublicOnly><RegisterPage /></PublicOnly>} />
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/transactions" element={<TransactionsPage />} />
+        <Route path="/budgets" element={<BudgetsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />

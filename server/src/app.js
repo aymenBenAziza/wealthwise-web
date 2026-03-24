@@ -5,6 +5,7 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
+const budgetRoutes = require('./routes/budgetRoutes');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/budgets', budgetRoutes);
 
 app.use((error, req, res, next) => {
   if (error.name === 'ZodError') {
