@@ -1,5 +1,6 @@
 const { z } = require('zod');
 const pool = require('../config/db');
+const notificationService = require('./notificationService');
 
 const transactionSchema = z.object({
   categoryId: z.coerce.number().int().positive(),
@@ -89,6 +90,7 @@ async function createTransaction(userId, input) {
     [userId, data.categoryId, data.amount, data.type, data.transactionDate, data.note || null]
   );
 
+  await notificationService.syncBudgetAlerts(userId, String(data.transactionDate).slice(0, 7));
   return getTransactionById(userId, result.insertId);
 }
 
@@ -137,12 +139,14 @@ async function updateTransaction(userId, transactionId, input) {
     [data.categoryId, data.amount, data.type, data.transactionDate, data.note || null, transactionId, userId]
   );
 
+  await notificationService.syncBudgetAlerts(userId, String(data.transactionDate).slice(0, 7));
   return getTransactionById(userId, transactionId);
 }
 
 async function deleteTransaction(userId, transactionId) {
-  await getTransactionById(userId, transactionId);
+  const transaction = await getTransactionById(userId, transactionId);
   await pool.execute('DELETE FROM transaction WHERE id = ? AND user_id = ?', [transactionId, userId]);
+  await notificationService.syncBudgetAlerts(userId, String(transaction.transactionDate).slice(0, 7));
 }
 
 module.exports = {

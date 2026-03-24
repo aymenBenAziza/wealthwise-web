@@ -4,6 +4,7 @@ import AnalyticsPage from '../pages/AnalyticsPage';
 import BudgetsPage from '../pages/BudgetsPage';
 import DashboardPage from '../pages/DashboardPage';
 import LoginPage from '../pages/LoginPage';
+import NotificationsPage from '../pages/NotificationsPage';
 import ProfilePage from '../pages/ProfilePage';
 import RegisterPage from '../pages/RegisterPage';
 import SavingsGoalsPage from '../pages/SavingsGoalsPage';
@@ -31,6 +32,7 @@ export default function AppRouter() {
         <Route path="/budgets" element={<BudgetsPage />} />
         <Route path="/savings-goals" element={<SavingsGoalsPage />} />
         <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />

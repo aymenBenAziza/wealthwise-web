@@ -1,5 +1,6 @@
 const { z } = require('zod');
 const pool = require('../config/db');
+const notificationService = require('./notificationService');
 
 const savingsGoalSchema = z.object({
   name: z.string().min(2).max(150),
@@ -144,6 +145,10 @@ async function createGoal(userId, input) {
     );
   }
 
+  if (achieved) {
+    await notificationService.createSystemNotification(userId, `Savings goal "${data.name}" has already been achieved.`);
+  }
+
   return getGoalById(userId, result.insertId);
 }
 
@@ -159,6 +164,10 @@ async function updateGoal(userId, goalId, input) {
      WHERE id = ? AND user_id = ?`,
     [data.name, data.targetAmount, nextCurrentAmount, data.deadline, achieved, goalId, userId]
   );
+
+  if (!current.isAchieved && achieved) {
+    await notificationService.createSystemNotification(userId, `Savings goal "${data.name}" has been achieved.`);
+  }
 
   return getGoalById(userId, goalId);
 }
@@ -189,6 +198,10 @@ async function addContribution(userId, goalId, input) {
      WHERE id = ? AND user_id = ?`,
     [newAmount, achieved, goalId, userId]
   );
+
+  if (!goal.isAchieved && achieved) {
+    await notificationService.createSystemNotification(userId, `Savings goal "${goal.name}" has been achieved.`);
+  }
 
   return getGoalById(userId, goalId);
 }

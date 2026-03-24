@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import http from '../api/http';
 
 const links = [
   { to: '/dashboard', label: 'Dashboard' },
@@ -26,6 +27,15 @@ function WealthWiseLogo() {
   );
 }
 
+function BellIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="header-icon-svg">
+      <path d="M12 3a4 4 0 0 0-4 4v1.2c0 .9-.3 1.8-.86 2.5L5.7 12.6A2 2 0 0 0 7.3 16h9.4a2 2 0 0 0 1.6-3.4l-1.44-1.9A4.2 4.2 0 0 1 16 8.2V7a4 4 0 0 0-4-4Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M10 19a2 2 0 0 0 4 0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
 function ProfileAvatar({ user }) {
   const avatarUrl = user?.profile?.avatarUrl;
   const initials = user?.name?.[0]?.toUpperCase() || 'U';
@@ -40,13 +50,23 @@ function ProfileAvatar({ user }) {
 export default function AppShell({ title, subtitle, aside, children }) {
   const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    http.get('/notifications')
+      .then((response) => setUnreadCount(response.data.unreadCount || 0))
+      .catch(() => {});
+  }, []);
 
   function handleNavigate() {
     setMenuOpen(false);
+    setProfileOpen(false);
   }
 
   function handleLogout() {
     setMenuOpen(false);
+    setProfileOpen(false);
     logout();
   }
 
@@ -90,17 +110,35 @@ export default function AppShell({ title, subtitle, aside, children }) {
                   {link.label}
                 </NavLink>
               ))}
-              <NavLink to="/profile" onClick={handleNavigate} className={({ isActive }) => isActive ? 'top-nav-link active mobile-profile-link' : 'top-nav-link mobile-profile-link'}>
-                Profile
+              <NavLink to="/notifications" onClick={handleNavigate} className={({ isActive }) => isActive ? 'top-nav-link active mobile-profile-link' : 'top-nav-link mobile-profile-link'}>
+                Notifications
               </NavLink>
+
             </div>
           </nav>
 
           <div className="header-user">
-            <Link to="/profile" className="header-avatar-link" aria-label="Open profile" onClick={handleNavigate}>
-              <ProfileAvatar user={user} />
+            <Link to="/notifications" className="header-icon-link" aria-label="Open notifications" onClick={handleNavigate}>
+              <BellIcon />
+              {unreadCount > 0 && <span className="header-icon-badge">{unreadCount}</span>}
             </Link>
-            <button type="button" className="ghost-button desktop-only" onClick={handleLogout}>Logout</button>
+            <div className="profile-menu-wrap">
+              <button
+                type="button"
+                className="header-avatar-link profile-toggle"
+                aria-label="Open profile menu"
+                aria-expanded={profileOpen}
+                onClick={() => setProfileOpen((value) => !value)}
+              >
+                <ProfileAvatar user={user} />
+              </button>
+              {profileOpen && (
+                <div className="profile-dropdown">
+                  <Link to="/profile" className="profile-dropdown-link" onClick={handleNavigate}>Profile</Link>
+                  <button type="button" className="profile-dropdown-link danger-link" onClick={handleLogout}>Logout</button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -120,3 +158,4 @@ export default function AppShell({ title, subtitle, aside, children }) {
     </div>
   );
 }
+
