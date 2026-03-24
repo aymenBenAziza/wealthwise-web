@@ -1,0 +1,25 @@
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const required = ['DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'JWT_SECRET'];
+
+for (const key of required) {
+  if (!process.env[key]) {
+    throw new Error(`Missing environment variable: ${key}`);
+  }
+}
+
+module.exports = {
+  port: Number(process.env.PORT || 5000),
+  clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+  db: {
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT || 3306),
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD || '',
+  },
+  jwtSecret: process.env.JWT_SECRET,
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
+};
