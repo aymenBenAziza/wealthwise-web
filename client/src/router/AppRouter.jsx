@@ -5,6 +5,7 @@ import DashboardPage from '../pages/DashboardPage';
 import LoginPage from '../pages/LoginPage';
 import ProfilePage from '../pages/ProfilePage';
 import RegisterPage from '../pages/RegisterPage';
+import SavingsGoalsPage from '../pages/SavingsGoalsPage';
 import TransactionsPage from '../pages/TransactionsPage';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -27,6 +28,7 @@ export default function AppRouter() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/transactions" element={<TransactionsPage />} />
         <Route path="/budgets" element={<BudgetsPage />} />
+        <Route path="/savings-goals" element={<SavingsGoalsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />

@@ -607,3 +607,123 @@ button:disabled { opacity: 0.7; }
     width: 100%;
   }
 }
+.savings-workspace {
+  align-items: start;
+}
+
+.savings-summary-panel {
+  align-self: start;
+}
+
+.savings-stack {
+  gap: 1.5rem;
+}
+
+.savings-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.savings-card {
+  display: grid;
+  gap: 1.15rem;
+  padding: 1.4rem;
+  border: 1px solid #eee5d7;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #fffefa, #fbf7ef);
+}
+
+.savings-card-head,
+.savings-stats,
+.savings-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.savings-card-title h3 {
+  margin: 0.5rem 0 0.35rem;
+}
+
+.goal-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  background: #efe7d9;
+  color: #584c38;
+  font-weight: 700;
+}
+
+.goal-badge.achieved {
+  background: #e7f5ed;
+  color: #1f6a4d;
+}
+
+.savings-stats {
+  padding: 0.35rem 0;
+}
+
+.savings-stats div {
+  min-width: 150px;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.savings-progress-meta {
+  align-items: end;
+}
+
+.savings-progress-track {
+  height: 14px;
+}
+
+.goal-contribution-panel {
+  display: grid;
+  gap: 0.7rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid #eee5d7;
+}
+
+.goal-contribution-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.goal-history {
+  display: grid;
+  gap: 0.55rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid #eee5d7;
+}
+
+.goal-history-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.goal-history-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--muted);
+  padding: 0.2rem 0;
+}
+
+@media (max-width: 640px) {
+  .savings-card-head,
+  .savings-stats,
+  .savings-progress-meta,
+  .goal-history-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .goal-contribution-row {
+    grid-template-columns: 1fr;
+  }
+}
