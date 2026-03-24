@@ -30,10 +30,23 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="auth-shell">
-      <form className="card auth-card" onSubmit={handleSubmit}>
-        <h1>Create account</h1>
-        <p>Start with Module 1: auth and profile.</p>
+    <div className="auth-shell auth-surface">
+      <section className="auth-showcase">
+        <p className="eyebrow">WealthWise Web</p>
+        <h1>Create a shared account for desktop and web.</h1>
+        <p className="hero-copy">This registration writes into the same MySQL users table used by the desktop application.</p>
+        <div className="showcase-pills">
+          <span className="hero-pill">Module 1</span>
+          <span className="hero-pill">Shared DB</span>
+          <span className="hero-pill">Responsive UI</span>
+        </div>
+      </section>
+
+      <form className="card auth-card soft-card" onSubmit={handleSubmit}>
+        <div>
+          <p className="section-kicker">Registration</p>
+          <h2>Create account</h2>
+        </div>
         {error && <div className="alert error">{error}</div>}
         <label>
           <span>Full name</span>
@@ -51,9 +64,7 @@ export default function RegisterPage() {
           <span>Confirm password</span>
           <input type="password" value={form.confirmPassword} onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })} required />
         </label>
-        <button type="submit" disabled={submitting}>
-          {submitting ? 'Creating account...' : 'Register'}
-        </button>
+        <button type="submit" disabled={submitting}>{submitting ? 'Creating account...' : 'Register'}</button>
         <p className="muted">Already registered? <Link to="/login">Sign in</Link></p>
       </form>
     </div>

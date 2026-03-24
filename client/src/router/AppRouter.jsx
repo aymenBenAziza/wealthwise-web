@@ -4,6 +4,7 @@ import DashboardPage from '../pages/DashboardPage';
 import LoginPage from '../pages/LoginPage';
 import ProfilePage from '../pages/ProfilePage';
 import RegisterPage from '../pages/RegisterPage';
+import TransactionsPage from '../pages/TransactionsPage';
 import { useAuth } from '../contexts/AuthContext';
 
 function PublicOnly({ children }) {
@@ -29,6 +30,7 @@ export default function AppRouter() {
       />
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/transactions" element={<TransactionsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
